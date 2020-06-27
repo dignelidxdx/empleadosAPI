@@ -5,6 +5,8 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "categoria")
 public class Categoria {
@@ -20,6 +22,7 @@ public class Categoria {
     // cascadetypeALL trae todos los empleados de esa categoria 
     // fetch obliga a que traiga todos de una. el lazy solo los trae cuando se llama, no se cargan de una
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Empleado> empleados = new ArrayList<>();
 
     public int getCategoriaId() {

@@ -22,9 +22,11 @@ public class Empleado {
     @Column(name = "estado_id")
     private int estadoId;
     
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
-    private Categoria categoria;
+	private Categoria categoria;
+
+
 
 	public int getEmpleadoId() {
 		return empleadoId;
