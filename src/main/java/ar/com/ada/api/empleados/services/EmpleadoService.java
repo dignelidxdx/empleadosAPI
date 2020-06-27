@@ -19,8 +19,15 @@ public class EmpleadoService {
     public void crearEmpleado(Empleado empleado) {
         repo.save(empleado);
     }
-    public List<Empleado> obtenerEmpleado() {
+    public List<Empleado> obtenerEmpleados() {
         return (repo.findAll());
     }
+	public Empleado obtenerPorId(int id) {
+		return repo.findById(id);
+    }
+    
+	public void grabar(Empleado empleada) {
+        repo.save(empleada);
+	}
     
 }

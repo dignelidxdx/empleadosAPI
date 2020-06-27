@@ -9,5 +9,6 @@ import ar.com.ada.api.empleados.entities.Empleado;
 
 @Repository
 public interface EmpleadoRepository extends JpaRepository<Empleado, Integer> {
-    
+    // al crear este metodo no necesitamos crear un opcional solo es menos codigo
+    Empleado findById(int id);
 }
