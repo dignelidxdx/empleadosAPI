@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import ar.com.ada.api.empleados.entities.Categoria;
 import ar.com.ada.api.empleados.entities.Empleado;
+import ar.com.ada.api.empleados.entities.Empleado.EmpleadoEstadoEnum;
 import ar.com.ada.api.empleados.models.request.InfoEmpleadaRequest;
 import ar.com.ada.api.empleados.models.request.NombreModifRequest;
 import ar.com.ada.api.empleados.models.request.SueldoModifRequest;
@@ -33,7 +34,7 @@ public class EmpleadoController {
         empleada.setFechaAlta(new Date());
         Categoria categoria = categoriaService.obtenerPorId(info.categoriaId);
         empleada.setCategoria(categoria);
-        empleada.setEstadoId(0);
+        empleada.setEstadoId(EmpleadoEstadoEnum.ACTIVO);
 
         empleadoService.crearEmpleado(empleada);
         GenericResponse gR = new GenericResponse();
@@ -50,7 +51,7 @@ public class EmpleadoController {
    
     }
     @GetMapping("/empleadas/{id}")
-    public ResponseEntity<Empleado> obtenerEmpleada(@PathVariable int id) {
+    public ResponseEntity<Empleado> obtenerEmpleada(@PathVariable Integer id) throws Exception {
         Empleado empleada = empleadoService.obtenerPorId(id);
         if(empleada == null) {
             return ResponseEntity.notFound().build();
@@ -59,13 +60,14 @@ public class EmpleadoController {
     }
 
     @GetMapping("/empleadas/categorias/{categoriaId}")
-    public ResponseEntity<List<Empleado>> listarPorCategoriaId(@PathVariable int categoriaId) {
-        List<Empleado> listaEmpleadas = categoriaService.obtenerPorId(categoriaId).getEmpleados();
+    public ResponseEntity<List<Empleado>> listarPorCategoriaId(@PathVariable Integer categoriaId) {
+        List<Empleado> listaEmpleadas = empleadoService.buscarEmpleadosByCategory(categoriaId);
         return ResponseEntity.ok(listaEmpleadas);
     }
 
     @PutMapping("/empleadas/{id}/sueldos")
-    public ResponseEntity<GenericResponse> actualizarSuelto(@PathVariable int id, @RequestBody SueldoModifRequest sueldoRequest) {
+    public ResponseEntity<GenericResponse> actualizarSuelto(@PathVariable Integer id, @RequestBody SueldoModifRequest sueldoRequest)
+            throws Exception {
         Empleado empleada = empleadoService.obtenerPorId(id);
         if(empleada  == null) {
             return ResponseEntity.notFound().build();            
@@ -79,7 +81,8 @@ public class EmpleadoController {
         return ResponseEntity.ok(gR);
     }
     @PutMapping("/empleadas/{id}/nombre")
-    public ResponseEntity<GenericResponse> actualizarNombre(@PathVariable int id, @RequestBody NombreModifRequest nombreRequest) {
+    public ResponseEntity<GenericResponse> actualizarNombre(@PathVariable Integer id, @RequestBody NombreModifRequest nombreRequest)
+            throws Exception {
         Empleado empleada = empleadoService.obtenerPorId(id);
         if(empleada  == null) {
             return ResponseEntity.notFound().build();            
@@ -93,13 +96,13 @@ public class EmpleadoController {
         return ResponseEntity.ok(gR);
     }
     @DeleteMapping("/empleadas/{id}")
-    public ResponseEntity<GenericResponse> bajaEmpleada(@PathVariable int id) {
+    public ResponseEntity<GenericResponse> bajaEmpleada(@PathVariable Integer id) throws Exception {
         Empleado empleada = empleadoService.obtenerPorId(id);
         if(empleada == null){
             return ResponseEntity.notFound().build();
         }
         empleada.setFechaBaja(new Date());
-        empleada.setEstadoId(1);
+        empleada.setEstadoId(EmpleadoEstadoEnum.DESVINCULADO);
         empleadoService.grabar(empleada);
         GenericResponse gR = new GenericResponse();
         gR.isOk = true;

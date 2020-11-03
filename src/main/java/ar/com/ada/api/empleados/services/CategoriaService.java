@@ -18,15 +18,17 @@ public class CategoriaService {
     public void crearCategoria(Categoria categoria) {
         repo.save(categoria);
     }
-    public List<Categoria> obtenerCategoria() {
+    public List<Categoria> obtenerCategorias() {
         return (repo.findAll());
     }
-    public Categoria obtenerPorId(int categoriaId) {
+    public Categoria obtenerPorId(Integer categoriaId) {
         Optional<Categoria> c = repo.findById(categoriaId);
         if (c.isPresent())
             return c.get();
         return null;
     }
+
+   
     
     
 
