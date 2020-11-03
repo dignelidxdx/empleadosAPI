@@ -40,14 +40,6 @@ public class Categoria {
     @Transient  //No meterlo a la base de datos. Es transitorio
     private SueldoCalculator sueldoStrategy;
 
-    public int getCategoriaId() {
-        return categoriaId;
-    }
-
-    public void setCategoriaId(int categoriaId) {
-        this.categoriaId = categoriaId;
-    }
-
     public String getNombre() {
         return nombre;
     }
